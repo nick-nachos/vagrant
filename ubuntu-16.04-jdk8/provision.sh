@@ -3,7 +3,7 @@
 add-apt-repository -y ppa:webupd8team/sublime-text-3
 apt-get update
 
-apt-get install -y ubuntu-desktop
+apt-get install -y ubuntu-mate-desktop
 apt-get install -y synaptic
 apt-get install -y apt-xapian-index
 
