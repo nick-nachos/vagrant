@@ -43,3 +43,5 @@ if [ ! `apt-cache policy google-chrome-stable | grep google-chrome-stable` ]; th
 else
 	apt-get install -y google-chrome-stable
 fi
+
+echo "fs.inotify.max_user_watches = 524288" > /etc/sysctl.d/60-idea.conf
