@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # sublime text editor
-add-apt-repository -y ppa:webupd8team/sublime-text-3
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 # ubuntu-make
 add-apt-repository ppa:ubuntu-desktop/ubuntu-make
 # scala build tool (sbt)
@@ -16,11 +17,11 @@ apt-get update
 
 # desktop environment
 apt-get install -y xubuntu-desktop lightdm moka-icon-theme arc-theme arc-icons
-apt-get install -y synaptic apt-xapian-index
+apt-get install -y synaptic apt-xapian-index apt-transport-https
 # build dependencies
 apt-get install -y build-essential dkms
 # basic tools
-apt-get install -y vim sublime-text-installer meld chromium-browser 
+apt-get install -y vim sublime-text meld chromium-browser 
 # version control systems
 apt-get install -y git subversion
 # jdk family
