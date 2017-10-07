@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-UMAKE_APP_DIR="/opt/umake"
-
 # sublime text editor
 add-apt-repository -y ppa:webupd8team/sublime-text-3
 # ubuntu-make
@@ -16,39 +14,21 @@ add-apt-repository ppa:noobslab/icons
 
 apt-get update
 
-apt-get install -y xubuntu-desktop
-apt-get install -y lightdm
-
-apt-get install -y moka-icon-theme
-apt-get install -y arc-theme
-apt-get install -y arc-icons
-
-apt-get install -y synaptic
-apt-get install -y apt-xapian-index
-
-apt-get install -y build-essential
-apt-get install -y dkms
-
-apt-get install -y vim
-apt-get install -y meld
-apt-get install -y sublime-text-installer
-
-apt-get install -y chromium-browser
-
-apt-get install -y git
-apt-get install -y subversion
-
-apt-get install -y default-jdk
-apt-get install -y default-jdk-doc
-apt-get install -y maven
-apt-get install -y scala
-apt-get install -y sbt
-
+# desktop environment
+apt-get install -y xubuntu-desktop lightdm moka-icon-theme arc-theme arc-icons
+apt-get install -y synaptic apt-xapian-index
+# build dependencies
+apt-get install -y build-essential dkms
+# basic tools
+apt-get install -y vim sublime-text-installer meld chromium-browser 
+# version control systems
+apt-get install -y git subversion
+# jdk family
+apt-get install -y default-jdk default-jdk-doc maven scala sbt
+# umake (works properly for local user ONLY)
 apt-get install -y ubuntu-make
-
+UMAKE_APP_DIR="/opt/umake"
 mkdir -p "$UMAKE_APP_DIR"
-# umake works properly for local user ONLY
 chown -R vagrant:vagrant "$UMAKE_APP_DIR"
-
 # optimize filesystem inotify settings for idea
 echo "fs.inotify.max_user_watches = 524288" > /etc/sysctl.d/60-idea.conf
