@@ -25,13 +25,13 @@ cd /home/vagrant
 rm -rf "$SHELL_EXT_DOWNLOAD_DIR"
 
 # Favorites
-gsettings set org.gnome.shell favorite-apps "[ \
-'org.gnome.Nautilus.desktop', \
-'firefox.desktop', \
-'org.gnome.Epiphany.desktop', \
-'gnome-system-monitor.desktop', \ 
-'org.gnome.Terminal.desktop', \
-'meld.desktop', \
-'sublime_text.desktop', \
-'intellij-idea-community_intellij-idea-community.desktop' \
+gsettings set org.gnome.shell favorite-apps "[
+'org.gnome.Nautilus.desktop',
+'firefox.desktop',
+'org.gnome.Epiphany.desktop',
+'gnome-system-monitor.desktop', 
+'org.gnome.Terminal.desktop',
+'meld.desktop',
+'sublime_text.desktop',
+'intellij-idea-community_intellij-idea-community.desktop'
 ]"
