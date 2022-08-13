@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+    config.vm.box = "bento/ubuntu-22.04"
+
+    config.vbguest.auto_update = true
+    config.vbguest.no_remote = true
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.name = "ubuntu-22.04-golang"
+        vb.memory = "8192"
+        vb.cpus = "2"
+    end
+
+    config.vm.provision "shell", path: "provision-root.sh"
+    config.vm.provision "shell", path: "provision-user.sh", privileged: false
+  
+    config.ssh.forward_agent = true
+end
