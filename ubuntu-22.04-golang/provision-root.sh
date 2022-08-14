@@ -7,3 +7,5 @@ apt-get install -y \
   dkms build-essential libxt6 \
   bash-completion zsh zsh-autosuggestions zsh-syntax-highlighting \
   git subversion vim docker.io golang
+
+chsh -s $(which zsh) vagrant
