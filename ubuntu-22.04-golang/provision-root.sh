@@ -4,5 +4,6 @@ apt-get update
 apt-get install -y apt-transport-https
 
 apt-get install -y \
-  dkms bash-completion zsh zsh-syntax-highlighting build-essential libxt6 \
+  dkms build-essential libxt6 \
+  bash-completion zsh zsh-autosuggestions zsh-syntax-highlighting \
   git subversion vim docker.io golang
