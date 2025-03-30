@@ -4,6 +4,5 @@ An attempt to automate (as much as possible) the provisioning of my development 
 
 ## Prerequisites
 
-* VirtualBox 5
-* Vagrant 1.9
-* [VirtualBox Guest Additions plugin](https://github.com/dotless-de/vagrant-vbguest) for Vagrant
+* VirtualBox
+* Vagrant

@@ -3,10 +3,12 @@
 export_var() {
     name="$1"
     value="$2"
-    echo "export $name='$value'" >> "$EXPORT_FILE"
+    export_file="$3"
+    echo "export $name='$value'" >> "$export_file"
 }
 
 export_vars() {
+    EXPORT_FILE="$1"
     GIT_USER_NAME="$(git config --global --get user.name)"
     GIT_USER_EMAIL="$(git config --global --get user.email)"
 
@@ -19,8 +21,8 @@ export_vars() {
 
     rm -rf "$EXPORT_FILE"
 
-    export_var 'GIT_USER_NAME' "$GIT_USER_NAME"
-    export_var 'GIT_USER_EMAIL' "$GIT_USER_EMAIL"
+    export_var 'GIT_USER_NAME' "$GIT_USER_NAME" "$EXPORT_FILE"
+    export_var 'GIT_USER_EMAIL' "$GIT_USER_EMAIL" "$EXPORT_FILE"
 }
 
 update_ssh_config() {
@@ -30,7 +32,7 @@ update_ssh_config() {
     VAGRANT_SSH_FILE="$VAGRANT_SSH_DIR/$1"
 
     if ! [ -d "$SSH_DIR" ]; then
-        echo '~/.ssh dir has not been initialised'
+        echo '~/.ssh dir has not been initialized'
         return 1
     fi
 
@@ -53,25 +55,29 @@ update_ssh_config() {
     chmod 600 "$VAGRANT_SSH_FILE"
 }
 
-if [ -z "$1" ]; then
+VM="$1"
+
+if [ -z "$VM" ]; then
     echo 'usage is <./install.sh $vm_dir>'
     return 1
 fi
 
-if ! [ -d "$1" ] || ! [ -f "$1/Vagrantfile" ] ; then
+if ! [ -d "$VM" ] || ! [ -f "$VM/Vagrantfile" ] ; then
     echo "$d is not a valid vagrant VM directory"
     return 1
 fi
 
-EXPORT_FILE="$1/exports.sh"
 CURRENT_DIR="$(pwd)"
-export_vars
+
+EXPORT_FILE="$VM/bootstrap/exports.sh"
+rm -rf "$VM/bootstrap"
+cp -R bootstrap "$VM" && export_vars "$EXPORT_FILE"
 
 if [ "$?" != "0" ]; then
     return 1
 fi
 
-cd "$1"
+cd "$VM"
 vagrant up
 
 if [ "$?" != "0" ]; then
@@ -79,8 +85,9 @@ if [ "$?" != "0" ]; then
     return 1
 fi
 
-update_ssh_config "$1"
+update_ssh_config "$VM"
 INSTALL_STATUS=$?
+
 cd "$CURRENT_DIR"
 rm "$EXPORT_FILE"
 

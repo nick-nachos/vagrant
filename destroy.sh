@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ]; then
+VM="$1"
+
+if [ -z "$VM" ]; then
     echo 'usage is <./destroy.sh $vm_dir>'
     return 1
 fi
 
-if ! [ -d "$1" ] || ! [ -f "$1/Vagrantfile" ] ; then
+if ! [ -d "$VM" ] || ! [ -f "$VM/Vagrantfile" ] ; then
     echo "$d is not a valid vagrant VM directory"
     return 1
 fi
@@ -21,7 +23,7 @@ update_ssh_config() {
 }
 
 CURRENT_DIR="$(pwd)"
-cd "$1"
+cd "$VM"
 vagrant destroy
 
 if [ "$?" != "0" ]; then
@@ -29,8 +31,11 @@ if [ "$?" != "0" ]; then
     return 1
 fi
 
-update_ssh_config "$1"
+update_ssh_config "$VM"
 INSTALL_STATUS=$?
+
 cd "$CURRENT_DIR"
+
+rm -rf "$VM/bootstrap"
 
 return $INSTALL_STATUS

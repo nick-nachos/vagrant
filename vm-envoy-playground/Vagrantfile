@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+    config.vm.box = "bento/ubuntu-24.04"
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.name = "envoy-playground"
+        vb.memory = "4096"
+        vb.cpus = "2"
+    end
+
+    config.ssh.forward_agent = true
+    
+    config.vm.network :forwarded_port, guest: 22, host: 2224, id: "ssh"
+    
+    config.vm.provision "shell", path: "bootstrap/provision-root-base.sh"
+    config.vm.provision "shell", path: "provision-root.sh"
+    config.vm.provision "shell", path: "bootstrap/provision-root-zsh.sh"
+    config.vm.provision "shell", path: "bootstrap/provision-user-base.sh", privileged: false
+    config.vm.provision "shell", path: "bootstrap/provision-user-zsh.sh", privileged: false
+    config.vm.provision "shell", path: "provision-user.sh", privileged: false
+
+    config.vm.synced_folder ".", "/vagrant", automount: true
+end
