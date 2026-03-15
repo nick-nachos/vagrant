@@ -2,8 +2,11 @@
 
 source /vagrant/bootstrap/provision-root-source.sh
 
-apt-get docker.io golang hey
+apt-get install -y \
+    golang \
+    rustup \
+    default-jdk default-jdk-doc maven
 
-usermod -aG docker $USER
-
+# Envoy tutorial setup
+apt-get install -y hey
 curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin

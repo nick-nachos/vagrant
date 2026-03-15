@@ -3,25 +3,33 @@
 
 Vagrant.configure("2") do |config|
 
-    config.vm.box = "bento/ubuntu-24.04"
+    config.ssh.forward_agent = true
 
+    config.vm.box = "bento/ubuntu-24.04"
+    config.vm.network :forwarded_port, guest: 22, host: 2224, id: "ssh"
+
+    # VirtualBox provider
     config.vm.provider "virtualbox" do |vb|
         vb.gui = false
-        vb.name = "envoy-playground"
-        vb.memory = "4096"
-        vb.cpus = "2"
+        vb.name = "pdf-utils"
+        vb.memory = "2048"
+        vb.cpus = "1"
     end
 
-    config.ssh.forward_agent = true
-    
-    config.vm.network :forwarded_port, guest: 22, host: 2224, id: "ssh"
+    # VMWare provider
+    config.vm.provider "vmware_desktop" do |vmd|
+        vmd.gui = false
+        vmd.vmx = {} if vmd.vmx.nil?
+        vmd.vmx["displayName"] = "pdf-utils"
+        vmd.memory = "2048"
+        vmd.cpus = "1"
+    end
     
     config.vm.provision "shell", path: "bootstrap/provision-root-base.sh"
     config.vm.provision "shell", path: "provision-root.sh"
     config.vm.provision "shell", path: "bootstrap/provision-root-zsh.sh"
     config.vm.provision "shell", path: "bootstrap/provision-user-base.sh", privileged: false
     config.vm.provision "shell", path: "bootstrap/provision-user-zsh.sh", privileged: false
-    config.vm.provision "shell", path: "provision-user.sh", privileged: false
 
     config.vm.synced_folder ".", "/vagrant", automount: true
 end

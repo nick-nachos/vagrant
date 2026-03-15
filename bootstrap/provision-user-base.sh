@@ -11,3 +11,6 @@ git config --global core.excludesFile '~/.gitignore'
 
 # Create workspace folder
 mkdir -p ~/workspace/github
+
+# User dev-x setup
+mkdir -p ~/.devx
