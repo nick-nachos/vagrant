@@ -4,12 +4,12 @@ VM="$1"
 
 if [ -z "$VM" ]; then
     echo 'usage is <./destroy.sh $vm_dir>'
-    return 1
+    exit 1
 fi
 
 if ! [ -d "$VM" ] || ! [ -f "$VM/Vagrantfile" ] ; then
     echo "$d is not a valid vagrant VM directory"
-    return 1
+    exit 1
 fi
 
 update_ssh_config() {
@@ -28,7 +28,7 @@ vagrant destroy
 
 if [ "$?" != "0" ]; then
     cd "$CURRENT_DIR"
-    return 1
+    exit 1
 fi
 
 update_ssh_config "$VM"

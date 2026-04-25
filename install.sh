@@ -59,12 +59,21 @@ VM="$1"
 
 if [ -z "$VM" ]; then
     echo 'usage is <./install.sh $vm_dir>'
-    return 1
+    exit 1
 fi
 
 if ! [ -d "$VM" ] || ! [ -f "$VM/Vagrantfile" ] ; then
-    echo "$d is not a valid vagrant VM directory"
-    return 1
+    echo "$VM is not a valid vagrant VM directory"
+    exit 1
+fi
+
+if ! vagrant plugin list | grep -q 'vagrant-libvirt'; then
+    echo 'vagrant-libvirt plugin is not installed; installing now...'
+    vagrant plugin install vagrant-libvirt
+    if [ "$?" != "0" ]; then
+        echo 'failed to install vagrant-libvirt plugin'
+        exit 1
+    fi
 fi
 
 CURRENT_DIR="$(pwd)"
@@ -74,7 +83,7 @@ rm -rf "$VM/bootstrap"
 cp -R bootstrap "$VM" && export_vars "$EXPORT_FILE"
 
 if [ "$?" != "0" ]; then
-    return 1
+    exit 1
 fi
 
 cd "$VM"
@@ -82,7 +91,7 @@ vagrant up
 
 if [ "$?" != "0" ]; then
     cd "$CURRENT_DIR"
-    return 1
+    exit 1
 fi
 
 update_ssh_config "$VM"
@@ -91,4 +100,4 @@ INSTALL_STATUS=$?
 cd "$CURRENT_DIR"
 rm "$EXPORT_FILE"
 
-return $INSTALL_STATUS
+exit $INSTALL_STATUS
