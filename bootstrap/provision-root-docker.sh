@@ -4,4 +4,4 @@ source /vagrant/bootstrap/provision-root-source.sh
 
 apt-get install -y docker.io docker-compose-v2
 
-usermod -aG docker $USER
+usermod -aG docker vagrant
