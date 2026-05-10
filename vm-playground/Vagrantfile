@@ -24,6 +24,17 @@ Vagrant.configure("2") do |config|
         vmd.memory = "8192"
         vmd.cpus = "4"
     end
+
+    # Libvirt provider
+    config.vm.provider "libvirt" do |lv|
+        lv.memory = 8192
+        lv.cpus = 4
+        lv.default_prefix = "playground"
+        # Extra recommendations for headless + performance on Ryzen
+        lv.graphics_type = "none" # fully disables graphical output
+        lv.video_type    = "none"
+        lv.cpu_mode      = "host-passthrough" # best performance on AMD
+    end
     
     config.vm.provision "shell", path: "bootstrap/provision-root-base.sh"
     config.vm.provision "shell", path: "bootstrap/provision-root-docker.sh"
